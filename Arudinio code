@@ -1,0 +1,72 @@
+int ledPinGreen = 9;                  // LED connected to digital pin 9
+int ledPinYellow = 10;                // LED connected to digital pin 10
+int ledPinRed = 11;                   // LED connected to digital pin 11
+int valu=0;
+int avg=0;
+int cnt=0;
+void setup() 
+{      // sets the pin as input
+  pinMode(ledPinGreen, OUTPUT);       // sets the pin as output
+  pinMode(ledPinYellow, OUTPUT);      // sets the pin as output
+  pinMode(ledPinRed, OUTPUT);         // sets the pin as output
+  pinMode(A0,INPUT);
+  Serial.begin(9600);
+   analogWrite(ledPinRed, 255);    // write to Red LED
+    analogWrite(ledPinYellow,0);     // disable Yellow LED
+    analogWrite(ledPinGreen, 0);      // disable Green LED
+ 
+ delay(1000);
+    analogWrite(ledPinRed, 0);    // write to Red LED
+    analogWrite(ledPinYellow,255);     // disable Yellow LED
+    analogWrite(ledPinGreen, 0);      // disable Green LED
+  
+ delay(1000);
+   analogWrite(ledPinRed, 0);    // write to Red LED
+    analogWrite(ledPinYellow,0);     // disable Yellow LED
+    analogWrite(ledPinGreen, 255);      // disable Green LED  
+ delay(1000);
+   analogWrite(ledPinRed, 0);    // write to Red LED
+    analogWrite(ledPinYellow,0);     // disable Yellow LED
+    analogWrite(ledPinGreen, 0);      // disable Green LED  
+delay(1000);
+ 
+ 
+}
+
+void loop() 
+{
+  valu=analogRead(A0);
+    Serial.println(valu);
+  delay(20);
+  avg=avg+valu;
+  cnt=cnt+1;
+  if(cnt>200)
+  {
+  //Serial.println("AVG: ");
+ // Serial.println(avg);
+  if (avg>10000)                      // high voltage - Red LED turns on
+  {
+    analogWrite(ledPinRed, 0);    // write to Red LED
+    analogWrite(ledPinYellow,255);     // disable Yellow LED
+    analogWrite(ledPinGreen, 0);      // disable Green LED
+    }
+  else if (avg>8000 && avg<=10000)   // approaching high voltage - Yellow LED turns on
+  {
+    analogWrite(ledPinRed, 255);        // disable Red LED
+    analogWrite(ledPinYellow,0); // write to Yellow LED
+    analogWrite(ledPinGreen, 0);      // disable Green LED
+    }
+  else if (avg<8000)   // low voltage - Green LED turns on
+  {
+    analogWrite(ledPinRed, 0);        // disable Red LED
+    analogWrite(ledPinYellow, 0);     // disable Yellow LED
+    analogWrite(ledPinGreen,255);  // write to Green LED
+   }
+   cnt=0;
+   avg=0;
+  delay(2000);
+  analogWrite(ledPinRed, 0);    // write to Red LED
+  analogWrite(ledPinYellow,0);     // disable Yellow LED
+  analogWrite(ledPinGreen, 0);      // disable Green LED 
+  }
+}
